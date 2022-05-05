@@ -107,7 +107,7 @@ void loop()
         }
         
     }
-    // If there is no serial sending to
+    // If there is no serial sending to arduino
     else{
         digitalWrite(ledPin1, LOW);
         digitalWrite(ledPin2, LOW);
