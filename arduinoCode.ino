@@ -211,7 +211,7 @@ void loop() {
         else out1 = OutputToMotor1(0);
       if(currentValue2 < currentLimit) out2 = OutputToMotor1(input2);
         else out2 = OutputToMotor2(0);
-      if(currentValue3 < currentLimit) out3 = OutputToMotor3(left_w);
+      if(currentValue3 < curreLimit) out3 = OutputToMotor3(left_w);
         else out3 = OutputToMotor3(0);    
       if(currentValue4 < currentLimit) out4 = OutputToMotor4(right_w);
         else out4 = OutputToMotor4(0);
