@@ -20,11 +20,7 @@ void setup()
     pinMode(INA4, OUTPUT);
     pinMode(INB4, OUTPUT);
     pinMode(PWM4, OUTPUT);
-    // Set pinmode to write command signal to LED.
-    pinMode(ledPin1, OUTPUT);
-    pinMode(ledPin2, OUTPUT);
-    pinMode(ledPin3, OUTPUT);
-    pinMode(ledPin4, OUTPUT);
+
 
     // Initialize motor driver
     // Motor driver3
@@ -37,9 +33,6 @@ void setup()
     digitalWrite(INB4, LOW);
     analogWrite(PWM4, 0);
 
-    digitalWrite(ledPin1, LOW);
-    digitalWrite(ledPin2, LOW);
-    digitalWrite(ledPin3, LOW);
 }
 
 void loop()
@@ -56,13 +49,9 @@ void loop()
 
             // If person is in center range
             if (cmd == 0){
-                // led1 light
-                digitalWrite(ledPin1, HIGH);
-                digitalWrite(ledPin2, LOW);
-                digitalWrite(ledPin3, LOW);
                 // set PWM for the speed of rotation of motor
-                analogWrite(PWM3, 100);
-                analogWrite(PWM4, 100);
+                analogWrite(PWM3, 60);
+                analogWrite(PWM4, 60);
                 // Motor 3 clockwise direction
                 digitalWrite(INA3, HIGH);
                 digitalWrite(INB3, LOW);
@@ -74,13 +63,9 @@ void loop()
             }
             // If person is at the right
             else if (cmd == 1){
-                // led 2 light
-                digitalWrite(ledPin2, HIGH);
-                digitalWrite(ledPin2, LOW);
-                digitalWrite(ledPin3, LOW);
                 // set PWM for the speed of rotation of motor
-                analogWrite(PWM3, 100);
-                analogWrite(PWM4, 100);
+                analogWrite(PWM3, 60);
+                analogWrite(PWM4, 60);
                 // Motor 3&4 clockwise direction, so it'll move to the right
                 digitalWrite(INA3, HIGH);
                 digitalWrite(INB3, LOW);
@@ -90,32 +75,51 @@ void loop()
             }
             // If person is at the left
             else if(cmd == 2){
-                // led 3 light
-                digitalWrite(ledPin3, HIGH);
-                digitalWrite(ledPin1, LOW);
-                digitalWrite(ledPin2, LOW);
                 // set PWM for the speed of rotation of motor
-                analogWrite(PWM3, 100);
-                analogWrite(PWM4, 100);
+                analogWrite(PWM3, 60);
+                analogWrite(PWM4, 60);
                 // Motor 3&4 Counterclockwise direction, so it'll move to the left
                 digitalWrite(INA4, LOW);
                 digitalWrite(INB4, HIGH);
                 digitalWrite(INA3, LOW);
                 digitalWrite(INB3, HIGH);
-
             }
+            
+            else if(cmd == 3){
+              digitalWrite(INA3, HIGH);
+              digitalWrite(INB3, HIGH);
+              digitalWrite(INA4, HIGH);
+              digitalWrite(INB4, HIGH);
+            }
+            else if (cmd == 4){
+              // Move backward
+              // set PWM for the speed of rotation of motor
+              analogWrite(PWM3, 40);
+              analogWrite(PWM4, 40);
+              // Motor 3 Counterclockwise direction
+              digitalWrite(INA3, LOW);
+              digitalWrite(INB3, HIGH);
+              // Motor 4 clockwise direction
+              digitalWrite(INA4, HIGH);
+              digitalWrite(INB4, LOW);
+            }
+            else{
+              digitalWrite(INA3, HIGH);
+              digitalWrite(INB3, HIGH);
+              digitalWrite(INA4, HIGH);
+              digitalWrite(INB4, HIGH);
+            }
+
         }
         
     }
     // If there is no serial sending to arduino
     else{
-        digitalWrite(ledPin1, LOW);
-        digitalWrite(ledPin2, LOW);
-        digitalWrite(ledPin3, LOW);
+
         digitalWrite(INA3, HIGH);
         digitalWrite(INB3, HIGH);
         digitalWrite(INA4, HIGH);
         digitalWrite(INB4, HIGH);
     }
-  delay(300);
+  delay(100);
 }
