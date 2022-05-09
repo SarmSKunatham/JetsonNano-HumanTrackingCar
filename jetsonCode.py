@@ -34,7 +34,7 @@ while display.IsStreaming():
                 # If a person is on the left
                 elif pos_x <= 400:
                     cmd = '{"command" : 2}'
-                # If a person is in the range (400, 880)
+                # If a person is in the range (400, 880), move forward
                 else:
                     cmd = '{"command": 0}'                
 
