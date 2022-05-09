@@ -5,7 +5,7 @@ import serial  # module for serial communication
 # Serial port connection
 ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
 # load obj detection model with 91 classes
-net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
+net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.55)
 # '/dev/video0' for V4L2, connecting to camera device for streaming
 camera = jetson.utils.videoSource("csi://0")
 # 'my_video.mp4' for file, video output interface
@@ -16,18 +16,37 @@ while display.IsStreaming():
 	img = camera.Capture()  # camera capture
 	detections = net.Detect(img)  # detecting object
 	for detection in detections:
-	    if detection.ClassID == 1:  # pick only person
+	    if detection.ClassID == 1:  # person detected
             # print(detection)
             # Center in x-axis
             center_x = 1280 / 2
             pos_x = detection.Center[0]
             area = detection.Area  # Area of bounding box
-            angle_x = (detection.Center[0]/1280)*180  # Convert to degree
-            angle_y = (detection.Center[1]/720)*180  # Convert to degree
-            print(f"Area: {area}, Position_x: {pos_x}, Center: {center_x}, Angle_x: {angle_x}, Angle_y: {angle_y}")
-            cmd = '{"area": %d,"angle_x":%d, "angle_y": %d}' % (area ,angle_x, angle_y)
+            # If it's too close
+            if area >= 500000:
+                # move backward
+                cmd = '{"command": 4}'
+            # If it's further
+            else:
+                # If a person is on the right
+                if pos_x >= 880:
+                    cmd = '{"command": 1}'
+                # If a person is on the left
+                elif pos_x <= 400:
+                    cmd = '{"command" : 2}'
+                # If a person is in the range (400, 880)
+                else:
+                    cmd = '{"command": 0}'                
+
             print(cmd)
             ser.write(cmd)
+        # Detected, but not a person
+        else:
+            cmd = '{"command": 3}'
+            print(cmd)
+            ser.write(cmd)
+
+
 
     display.Render(img) # visualize the result
     display.SetStatus("Object Detection | Network {:.0f} FPS".format(net.GetNetworkFPS()))
