@@ -86,6 +86,7 @@ void loop()
             }
             
             else if(cmd == 3){
+              // Brake
               digitalWrite(INA3, HIGH);
               digitalWrite(INB3, HIGH);
               digitalWrite(INA4, HIGH);
